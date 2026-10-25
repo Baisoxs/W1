@@ -1,0 +1,38 @@
+--------------------------------------------------------------------------------
+W1｜工程底座 + 项目立项
+--------------------------------------------------------------------------------
+学习（4h）
+- uv / pyproject / ruff / mypy / pytest / pre-commit
+- Git 分支、PR、Conventional Commits
+- Docker 镜像/容器/卷；Docker Compose 编排
+- LLM API 最小知识：messages、stream、usage、超时、重试
+
+📺 资料（按上面的技术点顺序）
+- uv 中文实战（腾讯云）：https://cloud.tencent.com.cn/developer/article/2635788
+- uv 官方文档：https://docs.astral.sh/uv/
+- ruff 官方文档：https://docs.astral.sh/ruff/
+- Git + GitHub（技术爬爬虾，约 107 万播放）：https://www.bilibili.com/video/BV1ySLc6QEcB
+- Git 小白教程（玄离199，约 182 万播放）：https://www.bilibili.com/video/BV1d6XVYqEuy
+- Docker 40 分钟实战（技术爬爬虾，约 70-115 万播放）：https://www.bilibili.com/video/BV1THKyzBER6
+- Docker Compose 官方：https://docs.docker.com/compose/
+- pytest 官方：https://docs.pytest.org/
+- GitHub Actions 官方：https://docs.github.com/en/actions
+
+动手（10h）
+1. GitHub 建仓库 servicepilot，MIT License，main 保护
+2. 目录骨架 + Makefile（make dev / test / lint / up）
+3. docker-compose：api + postgres(pgvector) + redis + minio
+4. packages/core/llm.py：OpenAI 兼容客户端（base_url/model/key 走环境变量）
+5. /healthz、/readyz、POST /v1/chat（SSE 透传）
+6. JSON 日志 + request_id 中间件
+7. 1 个 pytest + GitHub Actions（ruff + mypy + pytest）
+8. README v0.1：一句话、架构图、10 分钟启动
+
+项目
+- 写 1 页 PRD：用户是谁、3 个核心用例、明确不做什么
+- 选定一个公开产品文档作为知识库语料（不要用公司/实验室敏感数据）
+
+产出：M0
+验收：换机器按 README 能跑；CI 绿
+面试题：为什么用 Compose？单体 vs 微服务？健康检查检查什么？
+
