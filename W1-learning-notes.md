@@ -91,6 +91,7 @@ def hello():
 输入`git merge develop` 完成合并
 
 
+---
 # 二、创建并连接远程仓库
 ## 1.远程代码创建仓库
 打开github
@@ -114,10 +115,13 @@ def hello():
 `git pull <远程仓库名> <本地分支名>` 
 
 ## 4.申请token
-settings-->Developer settings-->Personal access tokens-->Fine-grainde tokens 然后新建就可以了
+**settings-->Developer settings-->Personal access tokens-->Fine-grainde tokens** 然后新建就可以了
 这样就可以连上了
 
 或者用SSE也行，上面用的是HTTPS
+` ssh-keygen -t rsa -C 邮箱`
+找到  Your public key has been saved in 后面的这个文件里面找到他，复制里面的内容
+然后再github上面，**settings-->SSH and GPG keys-->SSH Keys-->new ssh key**
 
 ## 总结
 创建仓库
@@ -131,3 +135,70 @@ settings-->Developer settings-->Personal access tokens-->Fine-grainde tokens 然
 -->`git merge develop`执行这个合并修改好的代码
 -->`git push origin master`推送到远程的仓库
 
+---
+# 三、UV实战教程
+## uv 的逻辑是：项目即环境。
+
+**不用提前建环境：** 你只需要在项目文件夹里输入 uv init。它会自动生成一个 pyproject.toml（这个文件就是你的“点菜清单”）。
+
+**自动管理解释器：** 你以前要自己下载安装 Python（没python用不了pip），现在你在项目里说一句“我要用 Python 3.12”，uv 发现你没装的话，它会静默帮你下载好。你不需要去官网找安装包。
+
+**PyCharm 对接更简单：** 在 PyCharm 里，你直接选“uv”，它会自动扫描项目里的那个清单（pyproject.toml），然后自动把该装的包都装在项目目录下的 .venv 文件夹里。
+
+## 基本语法
+|命令|用途|对应传统命令|
+|:-:|:-:|:-:|
+|uv venv|在当前目录创建虚拟环境 (.venv)|python -m venv .venv|
+|uv pip install <pkg>|安装指定的 Python 包|pip install <pkg>|
+|uv pip freeze|列出已安装的包及其版本|pip freeze|
+|uv pip compile|将 pyproject.toml 转为 requirements.txt|pip-compile|
+|uv pip sync|根据 lock 文件同步环境（删除多余包）|pip-sync|
+
+## UV项目管理（新一代工作流）
+如果你在开发一个完整的项目，这个是 uv 的项目模式，它会自动处理虚拟环境。
+
+|命令|用途|
+|:-:|:-:|
+|uv init|在当前文件夹初始化一个新的 Python 项目（生成 pyproject.toml）。**文件路径不能有中文**
+|uv python find|查看当前项目正在使用的是哪个路径下的 Python。
+|uv add <pkg>|添加依赖并自动更新 pyproject.toml 和锁文件。
+|uv remove <pkg>|移除依赖。
+|uv sync|确保项目环境与锁文件完全一致。
+|uv run <script.py>|最强命令之一。它会自动在虚拟环境中运行脚本，如果环境不存在，它会帮你建好。
+
+## Python 版本管理
+再也不需要 pyenv 或手动下载 Python 了。
+
+|命令|用途|
+|:-:|:-:|
+|uv python install 3.12|下载并安装指定版本的 Python。
+|uv python list|查看系统中已安装的和可供下载的 Python 版本。
+|uv python pin 3.11|固定当前项目使用的 Python 版本。
+
+## 工具运行 (uvx)
+如果你只想临时运行一个工具（比如 ruff 或 black），而不想把它安装到全局：
+
+uvx <tool>：下载、缓存并运行一个 Python 工具。
+比如：uvx ruff check .
+
+
+## 使用init之后会有这些文件
+1. **pyproject.toml**  —— 项目的“大脑”
+这是最重要的一个文件。在现代 Python 开发中，它取代了以前乱七八糟的 setup.py、requirements.txt 和各种工具的配置文件。
+- 干嘛用的：它记录了项目的元数据（名字、版本、作者）以及项目依赖。
+- 怎么用：当你运行 ``uv add pillow``  时，uv 会自动把 pillow 写进这个文件里。以后你把项目发给别人，别人只需要运行 ``uv sync`` ，uv 就会根据这个文件里的清单，把所有的包原封不动地装好。
+
+2. readme.md —— 项目的“脸面”
+这是一个标准的 Markdown 文档。
+- 干嘛用的：用来写项目的自我介绍。
+
+3. .gitignore —— 项目的“过滤器”
+- 干嘛用的：用 Git 来管理代码，这个文件会告诉 Git：“哪些东西不要上传”。
+- 为什么重要：uv 自动帮你写好了规则。它会忽略 .venv（虚拟环境文件夹）。因为虚拟环境很大且因人而异，我们通常只分享代码和配置文件（如 pyproject.toml），让别人在自己电脑上重新生成环境。
+
+4. .python-version —— 版本的“锚点”
+这是 uv 非常贴心的一个设计。
+- 干嘛用的：它里面只写了一个版本号（比如 3.12）。
+- UV最大优势：当你在这个文件夹下运行 uv run 时，uv 会先看一眼这个文件。如果它发现你系统里没装 3.12，它会自动帮你下载一个纯净的 3.12 放在缓存里，确保你的项目永远运行在正确的 Python 版本上。
+
+#### *而且这个和anaconda不冲突
