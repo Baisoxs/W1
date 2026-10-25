@@ -92,9 +92,42 @@ def hello():
 
 
 # 二、创建并连接远程仓库
+## 1.远程代码创建仓库
 打开github
 点击最上面的加号，点击new repository
 然后填写名字和介绍，选择要不要公开
 接下来是
 - README.md 这个会直接显示在下面，作为介绍
-- .gitignore 表示上传的时候忽略文件夹里面的哪个文件
+- .gitignore 表示上传的时候忽略文件夹里面的哪个文件，直接把要忽略的文件名字写到这个文件里面就可以
+在code的https里面找到链接
+
+## 2.把远程仓库和本地代码库进行绑定
+`git clone 远程仓库地址` 就可以绑定仓库了
+
+`git remote add origin 仓库地址` origin可以是远程仓库的别名，随便取，这个要先有自己的本地文件
+
+## 3.推送到远程
+`git push origin master` github默认有一个mian分支，把master换成main
+`git push origin main`
+
+`git push <远程仓库名> <本地分支名>:<远程分支名>`
+`git pull <远程仓库名> <本地分支名>` 
+
+## 4.申请token
+settings-->Developer settings-->Personal access tokens-->Fine-grainde tokens 然后新建就可以了
+这样就可以连上了
+
+或者用SSE也行，上面用的是HTTPS
+
+## 总结
+创建仓库
+-->绑定仓库
+-->切换到develop分支`git checkout -b develop`-b的话可以新建
+（现在更推荐`git switch 分支名`/`git switch -c 新分支名`）
+-->编写代码
+-->`git add *`  暂存
+-->`git commit -m ""` 提交
+-->`git checkout master`切换回master
+-->`git merge develop`执行这个合并修改好的代码
+-->`git push origin master`推送到远程的仓库
+
