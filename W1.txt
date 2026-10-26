@@ -9,8 +9,8 @@ W1｜工程底座 + 项目立项
 
 📺 资料（按上面的技术点顺序）
 - ✅️uv 中文实战（腾讯云）：https://cloud.tencent.com.cn/developer/article/2635788
-- uv 官方文档：https://docs.astral.sh/uv/
-- ruff 官方文档：https://docs.astral.sh/ruff/
+- ✅️uv 官方文档：https://docs.astral.sh/uv/
+- ✅️ruff 官方文档：https://docs.astral.sh/ruff/
 - Git + GitHub（技术爬爬虾，约 107 万播放）：https://www.bilibili.com/video/BV1ySLc6QEcB
 - ✅️Git 小白教程（玄离199，约 182 万播放）：https://www.bilibili.com/video/BV1d6XVYqEuy
 - Docker 40 分钟实战（技术爬爬虾，约 70-115 万播放）：https://www.bilibili.com/video/BV1THKyzBER6

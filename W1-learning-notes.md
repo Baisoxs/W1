@@ -136,7 +136,15 @@ def hello():
 -->`git push origin master`推送到远程的仓库
 
 ---
+
 # 三、UV实战教程
+
+## 亮点
+UV使用Rust写的
+**Rust** 是一门现代的系统级编程语言。简单来说，它既有 C/C++ 那样“贴近底层、运行极快”的性能，又通过极其严格的规则，从根本上杜绝了内存安全漏洞。
+
+[UV官网](https://docs.astral.sh/uv/)
+
 ## uv 的逻辑是：项目即环境。
 
 **不用提前建环境：** 你只需要在项目文件夹里输入 uv init。它会自动生成一个 pyproject.toml（这个文件就是你的“点菜清单”）。
@@ -202,3 +210,75 @@ uvx <tool>：下载、缓存并运行一个 Python 工具。
 - UV最大优势：当你在这个文件夹下运行 uv run 时，uv 会先看一眼这个文件。如果它发现你系统里没装 3.12，它会自动帮你下载一个纯净的 3.12 放在缓存里，确保你的项目永远运行在正确的 Python 版本上。
 
 #### *而且这个和anaconda不冲突
+
+---
+
+# 四、Ruff
+## 一个极其快速的 Python 助页和代码格式化器，用 Rust 编写。
+
+[Ruff官网](https://docs.astral.sh/ruff/)
+
+- 可以作为项目依赖安装
+`uv add --dev ruff`
+- 可以作为全局环境安装
+`uv tool install ruff`
+
+## 核心命令：检查代码问题 (ruff check)
+这是 Ruff 作为 Linter 最常用的命令，用来找出代码里的错误和不良写法。
+
+- 基本检查：扫描当前目录下的所有 Python 文件。
+
+``` bash
+ruff check .
+```
+
+- 自动修复：加上 --fix，Ruff 会尝试自动修掉能修的问题（比如删除没用的导入、调整格式）。
+
+```bash
+ruff check --fix .
+```
+
+- 只检查特定规则：如果你只想检查某类问题（比如行太长），可以用 --select。例如，只看 E501（行长度超限）：
+
+```bash
+ruff check --select E501 .
+```
+
+- 查看规则说明：想知道某个错误代码具体是什么意思，可以用 ruff rule 查询。
+
+```bash
+ruff rule E501
+```
+
+## 核心命令：统一代码格式 (ruff format)
+这是 Ruff 作为 Formatter 的功能，用来把代码排版得整整齐齐（风格类似 Black）。
+
+- 格式化代码：直接修改文件，让代码符合统一风格。
+
+```bash
+ruff format .
+```
+
+- 只检查不修改：如果你只想看代码格式对不对，不想改文件（比如在 CI 里用），加上 --check。
+
+```bash
+ruff format --check .
+```
+
+- 预览会改什么：加上 --diff，它会显示格式化前后的差异，但不会真的动你的文件。
+
+```bash
+ruff format --diff .
+```
+
+## 推荐组合用法
+在提交代码前，一个很顺手的流程是先让 Ruff 检查并自动修复问题，然后再统一格式化。因为 --fix 可能会调整代码结构（比如重排导入），格式化能随后把排版收拾干净。
+
+```bash
+# 先自动修复能修的问题，再格式化
+uv run ruff check --fix . && uv run ruff format .
+```
+
+---
+
+# 五、
